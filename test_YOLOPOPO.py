@@ -4,6 +4,8 @@ import re
 import webbrowser
 import pyimgur
 
+#I am the great cornholio
+
 
 CLIENT_ID = "5551c39c732cf55"
 CLIENT_SECRET = "ee9c26ce3daa35c4950407c5e8e1670431f1214f"
