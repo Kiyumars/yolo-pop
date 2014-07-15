@@ -6,6 +6,7 @@ import time
 import webbrowser
 import pyimgur
 
+##ground control to major tom
 
 CLIENT_ID = "5551c39c732cf55"
 CLIENT_SECRET = "ee9c26ce3daa35c4950407c5e8e1670431f1214f"
@@ -32,6 +33,24 @@ def authorisation():
 #just in case I need some helper function for comments
 def comment():
 	pass
+
+def get_image_comments(comments_list):
+		#search image comments and only reply to one yolo comment per image
+	for image in comments_list:
+		try:
+			comments_storage = image.get_comments()
+
+
+			for ind_comments in comments_storage:
+				#just tracking all comments in separate list
+				total_img_comments.append(ind_comments.text)
+
+				#add comment to list only if it matches yolo, only one entry per image
+				if yolo.search(ind_comments.text):
+					img_comments.append(ind_comments)
+					break
+				else:
+					continue
 
 #the big Kahuna function. 
 def yolo_police():
