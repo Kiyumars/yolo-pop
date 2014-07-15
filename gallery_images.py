@@ -39,15 +39,23 @@ def comment():
 def yolo_police():
 	#get all the gallery objects that fit the sorting criteria
 	gallery = im.get_gallery(section=img_section, sort=img_sort, window=window, show_viral=True, limit=limit_requests)
-	comments_storage = []
 	img_comments = []
+	total_img_comments = []
 	yolo_amount = 0
 	checking_amount = 0
 
-
+	#search image comments and only reply to one yolo comment per image
 	for image in gallery:
 		try:
-			comments_storage.append(image.get_comments())
+			comments_storage = image.get_comments()
+
+			for ind_comments in comments_storage:
+				total_img_comments += 1
+
+				if yolo.search(ind_comments):
+					
+
+
  
 			# for storage_entries in comments_storage:
 			# 	storage_entries.text
