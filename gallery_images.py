@@ -16,7 +16,7 @@ im = pyimgur.Imgur(CLIENT_ID, CLIENT_SECRET)
 #phrase we are searching for and reply we will post
 yolo = re.compile(r'yolo', re.IGNORECASE)
 botReply = "http://imgur.com/InrBi3g"
-limit_requests = 40
+limit_requests = 100
 img_section = 'hot'
 img_sort = 'time'
 window = 'day'
@@ -99,7 +99,7 @@ def yolo_police():
 		print str(yolo_amount) + " found, Lone Ranger. Must wait hour, find new Yolos."
 
 	# start program again in an hour
-	time.sleep(60*1)
+	time.sleep(60*60)
 	print "Tonto go look for Yolo tracks again, Lone Ranger."
 	yolo_again()
 
