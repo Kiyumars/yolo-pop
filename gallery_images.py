@@ -6,7 +6,6 @@ import time
 import webbrowser
 import pyimgur
 
-##ground control to major tom
 
 CLIENT_ID = "5551c39c732cf55"
 CLIENT_SECRET = "ee9c26ce3daa35c4950407c5e8e1670431f1214f"
@@ -17,11 +16,12 @@ im = pyimgur.Imgur(CLIENT_ID, CLIENT_SECRET)
 #phrase we are searching for and reply we will post
 yolo = re.compile(r'yolo', re.IGNORECASE)
 botReply = "http://imgur.com/InrBi3g"
-limit_requests = 100
+limit_requests = 5
 img_section = 'hot'
 img_sort = 'time'
 window = 'day'
-
+img_comments = []
+total_img_comments = []
 
 def authorisation():
 	auth_url = im.authorization_url('pin')
@@ -35,7 +35,7 @@ def comment():
 	pass
 
 def get_image_comments(comments_list):
-		#search image comments and only reply to one yolo comment per image
+	#search image comments and only reply to one yolo comment per image
 	for image in comments_list:
 		try:
 			comments_storage = image.get_comments()
@@ -51,37 +51,38 @@ def get_image_comments(comments_list):
 					break
 				else:
 					continue
+		except ValueError:
+					print "ValueError. It happens. \n"
+
 
 #the big Kahuna function. 
 def yolo_police():
 	#get all the gallery objects that fit the sorting criteria
 	gallery = im.get_gallery(section=img_section, sort=img_sort, window=window, show_viral=True, limit=limit_requests)
-	img_comments = []
-	total_img_comments = []
 	yolo_amount = 0
 	checking_amount = 0
 	
-
+	get_image_comments(gallery)
 	#search image comments and only reply to one yolo comment per image
-	for image in gallery:
-		try:
-			comments_storage = image.get_comments()
+	# for image in gallery:
+	# 	try:
+	# 		comments_storage = image.get_comments()
 
 
-			for ind_comments in comments_storage:
-				#just tracking all comments in separate list
-				total_img_comments.append(ind_comments.text)
+	# 		for ind_comments in comments_storage:
+	# 			#just tracking all comments in separate list
+	# 			total_img_comments.append(ind_comments.text)
 
-				#add comment to list only if it matches yolo, only one entry per image
-				if yolo.search(ind_comments.text):
-					img_comments.append(ind_comments)
-					break
-				else:
-					continue
+	# 			#add comment to list only if it matches yolo, only one entry per image
+	# 			if yolo.search(ind_comments.text):
+	# 				img_comments.append(ind_comments)
+	# 				break
+	# 			else:
+	# 				continue
 
 
-		except ValueError:
-			print "ValueError. It happens. \n"
+		# except ValueError:
+		# 	print "ValueError. It happens. \n"
 
 		
 	#create a flatted list from the nested list in comments_storage
