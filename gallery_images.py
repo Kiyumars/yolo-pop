@@ -35,9 +35,6 @@ def authorisation():
 	im.exchange_pin(pin)
 	yolo_police()
 
-#just in case I need some helper function for comments
-def comment():
-	pass
 
 def get_image_comments(comments_list):
 	"""search image comments and only reply to one yolo comment per image"""
