@@ -17,7 +17,7 @@ im = pyimgur.Imgur(CLIENT_ID, CLIENT_SECRET)
 yolo = re.compile(r'yolo', re.IGNORECASE)
 yolo_amount = 0
 botReply = "http://imgur.com/InrBi3g"
-limit_requests = 5
+limit_requests = 100
 img_section = 'hot'
 img_sort = 'time'
 window = 'day'
@@ -44,6 +44,7 @@ def get_image_comments(comments_list):
 
 
 			for ind_comments in comments_storage:
+				#print ind_comments.text
 				#just tracking all comments in separate list
 				total_img_comments.append(ind_comments.text)
 
@@ -56,8 +57,10 @@ def get_image_comments(comments_list):
 		except ValueError:
 					print "ValueError. It happens. \n"
 
+
 def activate_bot(targets):
 	"""bot replies to top yolo comments"""
+	global yolo_amount
 	for comment in targets:
 		try:
 			#you might have to use the decode function on comment.text
@@ -98,11 +101,9 @@ def yolo_again():
 def monitoring(entire_gallery):
 	"""print statements for monitoring purposes"""
 	print str(len(entire_gallery)) + " pictures in your gallery."
-	#create a flat list from the nested totalcomments list so we can see how many total comment items there were
-	flat_gallery = list(itertools.chain.from_iterable(total_img_comments))
-	print str(len(flat_gallery)) + " total comment items."
-	#print ut number of total yolo matches
+	print str(len(total_img_comments)) + " total comments."
 	print str(len(img_comments)) + " items in img_comments."
+
 
 
 ########## Please welcome the main function ##########
