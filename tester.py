@@ -96,7 +96,7 @@ def monitoring(entire_gallery):
 def yolo_police():
 	"""the big Kahuna function."""
 
-	print "Tonto go look for " + match_word + " out in wild. Do not follow Tonto. Much danger to Lone Ranger."
+	print "Tonto go look for " + match_word + " out in wild. Do not follow Tonto. Much danger to Lone Ranger. \n"
 
 	#get all the gallery objects that fit the sorting criteria
 	gallery = im.get_gallery(section=img_section, sort=img_sort, window=window, show_viral=True, limit=limit_requests)

@@ -14,16 +14,16 @@ im = pyimgur.Imgur(CLIENT_ID, CLIENT_SECRET)
 # im = pyimgur.Imgur(CLIENT_ID)
 
 #phrase we are searching for and reply we will post
-yolo = re.compile(r'yolo', re.IGNORECASE)
+yolo = re.compile(r'\s?.?yolo.?\b', re.IGNORECASE)
 yolo_amount = 0
-botReply = "http://imgur.com/InrBi3g"
-limit_requests = 100
+botReply = "http://imgur.com/4ZP1q94"
+limit_requests = 10
 img_section = 'hot'
-img_sort = 'time'
+img_sort = 'viral'
 window = 'day'
 img_comments = []
 total_img_comments = []
-
+reply_delay = 7
 #helper functions
 
 def authorisation():
@@ -56,7 +56,8 @@ def get_image_comments(comments_list):
 					continue
 		except ValueError:
 					print "ValueError. It happens. \n"
-
+					print image.title + "  "
+					continue
 
 def activate_bot(targets):
 	"""bot replies to top yolo comments"""
@@ -66,13 +67,14 @@ def activate_bot(targets):
 			#you might have to use the decode function on comment.text
 			print str(comment.id) + ": " + str(comment.text) + "\n"
 			comment.reply(botReply)
-			time.sleep(7)
+			time.sleep(reply_delay)
 			yolo_amount += 1
 		except UnicodeEncodeError:
 			print "There was an unicode error."
 			continue
 		except AttributeError:
-			print "AttributeError. Skipping it."	
+			print "AttributeError. Skipping it."
+			continue	
 
 def tonto_sleep():
 	"""Clear out all global variables and restart in an hour"""
@@ -112,8 +114,11 @@ def yolo_police():
 	"""the big Kahuna function."""
 
 	#get all the gallery objects that fit the sorting criteria
-	gallery = im.get_gallery(section=img_section, sort=img_sort, window=window, show_viral=True, limit=limit_requests)
-	
+	try:
+		gallery = im.get_gallery(section=img_section, sort=img_sort, window=window, show_viral=True, limit=limit_requests)
+	except:
+		"Bison mating season. Journey much danger. No can go find Yolos."
+		sys.exit()
 	get_image_comments(gallery)
 
 	monitoring(gallery)
