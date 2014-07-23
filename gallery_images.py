@@ -16,14 +16,11 @@ img = pyimgur.Imgur(CLIENT_ID, CLIENT_SECRET)
 
 ############## global variables
 yolo = re.compile(r'.?yolo.?\b', re.IGNORECASE)
-# yolo_amount = 0
 botReply = "http://imgur.com/4ZP1q94"
 limit_requests = 3
 img_section = 'hot'
 img_sort = 'viral'
 window = 'day'
-# img_comments = []
-# total_img_comments = []
 reply_delay = 7
 sleeping_time = 60*1
 
@@ -46,11 +43,6 @@ def get_image_comments(gallery_images):
 def search_comments(comments):
 	"""Search every comment for the regex pattern"""
 	for comment in comments:
-			#print ind_comments.text
-			#just tracking all comments in separate list
-			# total_img_comments.append(ind_comments.text)
-
-			#add comment to list only if it matches yolo, only one entry per image
 		if yolo.search(comment.text):
 			bot_replies(comment)
 			break
@@ -61,13 +53,14 @@ def search_comments(comments):
 def bot_replies(comment):
 	"""bot replies to top yolo comments"""
 	try:
-		#you might have to use the decode function on comment.text
+		#this is just for my own edification
 		author = str(comment.author.name)
 		author_id = str(comment.author.id)
 		comment_id = str(comment.id)
 		text = comment.text
-
 		print comment_id + ": " + text + " " + author + " " + author_id + "\n"
+		
+		#this actually posts the reply
 		comment.reply(botReply)
 		time.sleep(reply_delay)
 		# yolo_amount += 1
