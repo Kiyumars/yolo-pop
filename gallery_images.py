@@ -6,6 +6,7 @@ import time
 import webbrowser
 
 import pyimgur
+from PIL import Image, ImageDraw, ImageFont
 
 
 CLIENT_ID = os.environ['Imgur_CLIENT_ID']
@@ -23,6 +24,7 @@ Viral_or_new = 'viral'
 How_long = 'day'
 Reply_delay = 7
 Sleeping_time = 60*1
+Uploading_image = '/home/kiyu/Projects/Imgur/yolopopo/personalised_yolo'
 
 ############## Helper functions
 
@@ -44,13 +46,15 @@ def search_comments(comments):
 	"""Search every comment for the regex pattern"""
 	for comment in comments:
 		if Yolo.search(comment.text):
-			bot_replies(comment)
+			make_pic(comment.author.name)
+			reply_link = upload_an_image()
+			bot_replies(comment, reply_link)
 			break
 		else:
 			continue
 
 
-def bot_replies(comment):
+def bot_replies(comment, reply_link):
 	"""bot replies to top yolo comments"""
 	try:
 		#this is just for my own edification
@@ -61,7 +65,8 @@ def bot_replies(comment):
 		print comment_id + ": " + text + " " + author + " " + author_id + "\n"
 		
 		#this actually posts the reply
-		comment.reply(Bot_reply)
+		comment.reply(reply_link)
+		make_pic(author)
 		time.sleep(Reply_delay)
 		# yolo_amount += 1
 	except UnicodeEncodeError:
@@ -90,6 +95,26 @@ def yolo_police():
 	gallery = get_images()
 
 	get_image_comments(gallery)
+
+def make_pic(username):
+	"""Caption a pic or gif with the name of the author of the matched comment"""
+	upper_msg = username.upper() + ". I am with the YOLO Police."
+	lower_msg = "You are coming with me."
+	image_original = 'yolopopo.jpg'
+	image = Image.open(image_original)
+	draw = ImageDraw.Draw(image)
+	font = ImageFont.truetype("/usr/share/fonts/CODE Bold.otf", 45)
+
+	draw.text((0,0), upper_msg, 'white', font=font)
+	draw.text((0,600), lower_msg, 'white', font=font)
+
+	image.save('personalised_yolo', 'PNG')
+	# upload_an_image()
+
+def upload_an_image():
+	uploaded_image = img.upload_image(path=Uploading_image, title='We are with the YOLO police. You know what you did.')
+	return uploaded_image.link
+
 
 
 ########### Impressed? I thought so
