@@ -15,14 +15,14 @@ img = pyimgur.Imgur(CLIENT_ID, CLIENT_SECRET)
 
 
 ############## global variables
-yolo = re.compile(r'.?yolo.?\b', re.IGNORECASE)
-botReply = "http://imgur.com/4ZP1q94"
-limit_requests = 3
-img_section = 'hot'
-img_sort = 'viral'
-window = 'day'
-reply_delay = 7
-sleeping_time = 60*1
+Yolo = re.compile(r'.?yolo.?\b', re.IGNORECASE)
+Bot_reply = "http://imgur.com/4ZP1q94"
+Limit_requests = 3
+Frontpage = 'hot'
+Viral_or_new = 'viral'
+How_long = 'day'
+Reply_delay = 7
+Sleeping_time = 60*1
 
 ############## Helper functions
 
@@ -43,7 +43,7 @@ def get_image_comments(gallery_images):
 def search_comments(comments):
 	"""Search every comment for the regex pattern"""
 	for comment in comments:
-		if yolo.search(comment.text):
+		if Yolo.search(comment.text):
 			bot_replies(comment)
 			break
 		else:
@@ -61,8 +61,8 @@ def bot_replies(comment):
 		print comment_id + ": " + text + " " + author + " " + author_id + "\n"
 		
 		#this actually posts the reply
-		comment.reply(botReply)
-		time.sleep(reply_delay)
+		comment.reply(Bot_reply)
+		time.sleep(Reply_delay)
 		# yolo_amount += 1
 	except UnicodeEncodeError:
 		print "There was an unicode error."
@@ -79,7 +79,7 @@ def yolo_again():
 
 
 def get_images():
-	return img.get_gallery(section=img_section, sort=img_sort, window=window, show_viral=True, limit=limit_requests)
+	return img.get_gallery(section=Frontpage, sort=Viral_or_new, window=How_long, show_viral=True, limit=Limit_requests)
 
 ########## Please welcome the main function ##########
 
@@ -102,5 +102,5 @@ if __name__ == '__main__':
 		print "Tonto go out find Yolo beasts. Do not follow Tonto. Too dangerous for Lone Ranger."
 		yolo_police()
 		print "Tonto go sleep one hour. Then find Yolo again.\n"
-		time.sleep(sleeping_time)
+		time.sleep(Sleeping_time)
 		img.refresh_access_token()
