@@ -9,8 +9,8 @@ import pyimgur
 from PIL import Image, ImageDraw, ImageFont
 
 
-CLIENT_ID = os.environ['Imgur_CLIENT_ID']
-CLIENT_SECRET = os.environ['Imgur_CLIENT_SECRET']
+CLIENT_ID = os.environ['IMGUR_CLIENT_ID']
+CLIENT_SECRET = os.environ['IMGUR_CLIENT_SECRET']
 img = pyimgur.Imgur(CLIENT_ID, CLIENT_SECRET)
 # im = pyimgur.Imgur(CLIENT_ID)
 
@@ -18,12 +18,12 @@ img = pyimgur.Imgur(CLIENT_ID, CLIENT_SECRET)
 ############## global variables
 Yolo = re.compile(r'.?yolo.?\b', re.IGNORECASE)
 Bot_reply = "http://imgur.com/4ZP1q94"
-Limit_requests = 3
+Limit_requests = 20
 Frontpage = 'hot'
 Viral_or_new = 'viral'
 How_long = 'day'
 Reply_delay = 7
-Sleeping_time = 60*1
+Sleeping_time = 60*60
 Uploading_image = '/home/kiyu/Projects/Imgur/yolopopo/personalised_yolo'
 
 ############## Helper functions
@@ -38,20 +38,25 @@ def authorisation():
 
 def get_image_comments(gallery_images):
 	"""search image comments and only reply to one yolo comment per image"""
+	total_yolos = 0
 	for image in gallery_images:
-		search_comments(image.get_comments())
-
+		yolo_addition = search_comments(image.get_comments())
+		total_yolos += yolo_addition
+	get_yolo_amount(total_yolos)
 
 def search_comments(comments):
 	"""Search every comment for the regex pattern"""
+	yolo_amount = 0
 	for comment in comments:
 		if Yolo.search(comment.text):
+			yolo_amount += 1
 			make_pic(comment.author.name)
 			reply_link = upload_an_image()
 			bot_replies(comment, reply_link)
 			break
 		else:
 			continue
+	return yolo_amount
 
 
 def bot_replies(comment, reply_link):
@@ -98,6 +103,10 @@ def yolo_police():
 
 def make_pic(username):
 	"""Caption a pic or gif with the name of the author of the matched comment"""
+	#only display part of overly long username
+	if len(username) > 12:
+		username = username[0:12]
+
 	upper_msg = username.upper() + ". I am with the YOLO Police."
 	lower_msg = "You are coming with me."
 	image_original = 'yolopopo.jpg'
@@ -115,6 +124,12 @@ def upload_an_image():
 	uploaded_image = img.upload_image(path=Uploading_image, title='We are with the YOLO police. You know what you did.')
 	return uploaded_image.link
 
+
+def get_yolo_amount(yolo_amount):
+	if yolo_amount < 1:
+		print "Tonto no find Yolos in wild.\n"
+	else:
+		print "Tonto find " + str(yolo_amount) + " Yolos out in wild.\n"
 
 
 ########### Impressed? I thought so
