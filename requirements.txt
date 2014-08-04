@@ -1,0 +1,10 @@
+Pillow==2.5.1
+argparse==1.2.1
+backports.ssl-match-hostname==3.4.0.2
+certifi==14.05.14
+imgurpython==1.0.1
+pyimgur==0.5.2
+regetron==1.4
+requests==2.3.0
+tornado==4.0
+wsgiref==0.1.2
